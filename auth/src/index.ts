@@ -1,10 +1,10 @@
 import express from 'express';
 import { json } from 'body-parser';
 
-import { currentRouter } from './routers/current';
-import { signinRouter } from './routers/signin';
-import { signupRouter } from './routers/signup';
-import { signoutRouter } from './routers/signout';
+import { currentRouter } from './routes/current';
+import { signinRouter } from './routes/signin';
+import { signupRouter } from './routes/signup';
+import { signoutRouter } from './routes/signout';
 
 const app = express();
 app.use(json());
