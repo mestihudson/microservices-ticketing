@@ -12,3 +12,14 @@ it('returns a 201 on successful signup', async () => {
     .expect(201)
   ;
 });
+
+it('returns a 400 with an invalid email', async () => {
+  return request(app)
+    .post('/api/users/signup')
+    .send({
+      email: 'test',
+      password: 'password'
+    })
+    .expect(400)
+  ;
+});
