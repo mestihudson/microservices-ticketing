@@ -20,6 +20,13 @@
     "start": "ts-node-dev --poll src/index.ts",
     "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
+  },
   "devDependencies": {
     "jest": "^27.3.1",
     "mongodb-memory-server": "^8.0.2",
