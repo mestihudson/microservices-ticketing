@@ -1,7 +1,14 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import request from 'supertest';
+
+import { app } from '@/app';
 
 jest.setTimeout(30000);
+
+declare global {
+  function signin(email?: string, password?: string): Promise<string[]>;
+}
 
 let mongo: any;
 
@@ -26,3 +33,15 @@ afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
 });
+
+global.signin = async (
+  email: string = 'test@test.com', password: string = 'password') => {
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({ email, password })
+    .expect(201);
+
+  const cookie = response.get('Set-Cookie');
+
+  return cookie;
+};
