@@ -21,13 +21,6 @@
     "start": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
     "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./src/test/setup.ts"
-    ]
-  },
   "devDependencies": {
     "@types/jest": "^27.0.2",
     "@types/supertest": "^2.0.11",
