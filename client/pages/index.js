@@ -1,21 +1,14 @@
-import axios from 'axios'
+import buildClient from '../api/build-client'
 
 const Landing = ({ currentUser }) => {
   console.log(currentUser)
   return <h1>Landing Page</h1>
 }
 
-Landing.getInitialProps = async ({ req }) => {
-  const { headers } = req
-  const url = 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
+Landing.getInitialProps = async (context) => {
   const uri = '/api/users/current'
-  if (typeof window === 'undefined') {
-    const { data } = await axios.get(`${url}${uri}`, { headers })
-    return data
-  } else {
-    const { data } = await axios.get(uri)
-    return data
-  }
+  const { data } = await buildClient(context).get(uri)
+  return data
 }
 
 export default Landing
