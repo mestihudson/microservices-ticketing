@@ -5,13 +5,10 @@ const Landing = ({ currentUser }) => {
   return <h1>Landing Page</h1>
 }
 
-Landing.getInitialProps = async () => {
+Landing.getInitialProps = async ({ req }) => {
+  const { headers } = req
   if (typeof window === 'undefined') {
-    const { data } = await axios.get('http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/current', {
-      headers: {
-        Host: 'ticketing.dev'
-      }
-    })
+    const { data } = await axios.get('http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/current', { headers })
     return data
   } else {
     const { data } = await axios.get('/api/users/current')
