@@ -7,11 +7,13 @@ const Landing = ({ currentUser }) => {
 
 Landing.getInitialProps = async ({ req }) => {
   const { headers } = req
+  const url = 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
+  const uri = '/api/users/current'
   if (typeof window === 'undefined') {
-    const { data } = await axios.get('http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/current', { headers })
+    const { data } = await axios.get(`${url}${uri}`, { headers })
     return data
   } else {
-    const { data } = await axios.get('/api/users/current')
+    const { data } = await axios.get(uri)
     return data
   }
 }
