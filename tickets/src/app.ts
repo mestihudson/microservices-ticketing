@@ -4,6 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
 import { errorHandler, NotFoundError } from '@mestihudson-ticketing/common';
+import { newTicketRouter } from '@/routes/new';
 
 const app = express();
 app.set('trust proxy', true);
@@ -14,6 +15,8 @@ app.use(
     secure: process.env.NODE_ENV !== 'test'
   })
 );
+
+app.use(newTicketRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
