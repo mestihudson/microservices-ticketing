@@ -3,10 +3,6 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
-import { currentRouter } from '@/routes/current';
-import { signinRouter } from '@/routes/signin';
-import { signupRouter } from '@/routes/signup';
-import { signoutRouter } from '@/routes/signout';
 import { errorHandler, NotFoundError } from '@mestihudson-ticketing/common';
 
 const app = express();
@@ -18,11 +14,6 @@ app.use(
     secure: process.env.NODE_ENV !== 'test'
   })
 );
-
-app.use(currentRouter);
-app.use(signinRouter);
-app.use(signupRouter);
-app.use(signoutRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
