@@ -36,30 +36,15 @@ describe('returns an error if an invalid title is provided', () => {
   });
 });
 
-it('returns an error if an invalid price is provided', async () => {
-  await request(app)
-    .post('/api/tickets')
-    .set('Cookie', signin())
-    .send({
-      title: 'dsfjapsodf',
-      price: -10
-    })
-    .expect(400);
-  await request(app)
-    .post('/api/tickets')
-    .set('Cookie', signin())
-    .send({
-      title: 'dsfjapsodf',
-      price: 0
-    })
-    .expect(400);
-  await request(app)
-    .post('/api/tickets')
-    .set('Cookie', signin())
-    .send({
-      title: 'dsfjapsodf'
-    })
-    .expect(400);
+describe ('returns an error if an invalid price is provided', () => {
+  it.each([{ price: -10 }, { price: 0 }, {}])
+    ('provided price: %s', async (providedPrice) => {
+    await request(app)
+      .post('/api/tickets')
+      .set('Cookie', signin())
+      .send({ title: 'dsfjapsodf', ...providedPrice })
+      .expect(400);
+  });
 });
 
 it('create a ticket with valid inputs', async () => {});
