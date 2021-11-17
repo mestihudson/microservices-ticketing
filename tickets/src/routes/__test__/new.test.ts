@@ -27,7 +27,7 @@ it('returns a status other than 401 if the user is signed in', async () => {
 
 describe('returns an error if an invalid title is provided', () => {
   it.each([{ title: '' }, {}])
-    ('provided title: [%s]',
+    ('provided title: %s',
     async (providedTitle) => {
     await request(app)
       .post('/api/tickets')
