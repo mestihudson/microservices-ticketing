@@ -20,6 +20,19 @@ it('returns a 401 if the user is not authenticated', async () => {
 		.expect(401);
 });
 
-it.todo('returns a 401 if the user does not own the ticket');
+it('returns a 401 if the user does not own the ticket', async () => {
+	const response = await request(app)
+	  .post('/api/tickets')
+		.set('Cookie', signin('test@test.com', 'new-user-id'))
+		.send({ title: 'dklfjaçslkd', price: 20 })
+		expect(201);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', signin('test@test.com', 'update-user-id'))
+		.send({ title: 'dklfjaçslkd', price: 200 })
+		.expect(401);
+});
+
 it.todo('returns a 400 if the user provides an invalid title or price');
 it.todo('updates the ticket provided valid inputs');
