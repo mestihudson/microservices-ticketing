@@ -34,44 +34,33 @@ it('returns a 401 if the user does not own the ticket', async () => {
 		.expect(401);
 });
 
-it('returns a 400 if the user provides an invalid input', async () => {
-	const cookie = signin('test@test.com', 'new-user-id');
+describe('returns a 400 if the user provides an invalid input', () => {
+	let cookie: any, response: any;
 
-	const response = await request(app)
-	  .post('/api/tickets')
-		.set('Cookie', cookie)
-		.send({ title: 'dklfjaçslkd', price: 20 })
-		expect(201);
+	beforeAll(async () => {
+		cookie = signin('test@test.com', 'new-user-id');
 
-	await request(app)
-	  .put(`/api/tickets/${response.body.id}`)
-		.set('Cookie', cookie)
-		.send({ title: '', price: 200 })
-		.expect(400);
+		response = await request(app)
+			.post('/api/tickets')
+			.set('Cookie', cookie)
+			.send({ title: 'dklfjaçslkd', price: 20 })
+			expect(201);
+	});
 
-	await request(app)
-	  .put(`/api/tickets/${response.body.id}`)
-		.set('Cookie', cookie)
-		.send({ price: 200 })
-		.expect(400);
+	it.each([
+			{ title: '', price: 200 },
+			{ price: 200 },
+			{ title: 'ajskdçflk', price: -10 },
+			{ title: 'ajskdçflk', price: 0 },
+			{ title: 'ajskdçflk' }
+		])('provided input: %s', async (input) => {
 
-	await request(app)
-	  .put(`/api/tickets/${response.body.id}`)
-		.set('Cookie', cookie)
-		.send({ title: 'dfasdfa', price: -10 })
-		.expect(400);
-
-	await request(app)
-	  .put(`/api/tickets/${response.body.id}`)
-		.set('Cookie', cookie)
-		.send({ title: 'dfasdfa', price: 0 })
-		.expect(400);
-
-	await request(app)
-	  .put(`/api/tickets/${response.body.id}`)
-		.set('Cookie', cookie)
-		.send({ title: 'dfasdfa' })
-		.expect(400);
+		await request(app)
+			.put(`/api/tickets/${response.body.id}`)
+			.set('Cookie', cookie)
+			.send(input)
+			.expect(400);
+	});
 });
 
 it.todo('updates the ticket provided valid inputs');
