@@ -27,7 +27,11 @@ router.put(
     throw new NotAuthorizedError();
   }
 
-  res.sendStatus(200);
+  const { title, price } = req.body;
+  ticket.set({ title, price });
+  await ticket.save();
+
+  res.send(ticket);
 });
 
 export { router as updateTicketRouter };
