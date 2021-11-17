@@ -63,4 +63,27 @@ describe('returns a 400 if the user provides an invalid input', () => {
 	});
 });
 
-it.todo('updates the ticket provided valid inputs');
+it('updates the ticket provided valid inputs', async () => {
+		const cookie = signin('test@test.com', 'new-user-id');
+
+		const creation = { title: 'dklfjaçslkd', price: 20 };
+		const response = await request(app)
+			.post('/api/tickets')
+			.set('Cookie', cookie)
+			.send(creation)
+			expect(201);
+
+		const update = { title: 'kdfjçasldkjfçalsk', price: 200 };
+		await request(app)
+			.put(`/api/tickets/${response.body.id}`)
+			.set('Cookie', cookie)
+			.send(update)
+			.expect(200);
+
+		const ticketResponse = await request(app)
+		  .get(`/api/tickets/${response.body.id}`)
+			.set('Cookie', cookie)
+			.send();
+
+		expect(ticketResponse.body).toMatchObject({ ...update });
+});
