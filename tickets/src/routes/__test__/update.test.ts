@@ -34,5 +34,44 @@ it('returns a 401 if the user does not own the ticket', async () => {
 		.expect(401);
 });
 
-it.todo('returns a 400 if the user provides an invalid title or price');
+it('returns a 400 if the user provides an invalid title or price', async () => {
+	const cookie = signin('test@test.com', 'new-user-id');
+
+	const response = await request(app)
+	  .post('/api/tickets')
+		.set('Cookie', cookie)
+		.send({ title: 'dklfjaçslkd', price: 20 })
+		expect(201);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', cookie)
+		.send({ title: '', price: 200 })
+		.expect(400);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', cookie)
+		.send({ price: 200 })
+		.expect(400);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', cookie)
+		.send({ title: 'dfasdfa', price: -10 })
+		.expect(400);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', cookie)
+		.send({ title: 'dfasdfa', price: 0 })
+		.expect(400);
+
+	await request(app)
+	  .put(`/api/tickets/${response.body.id}`)
+		.set('Cookie', cookie)
+		.send({ title: 'dfasdfa' })
+		.expect(400);
+});
+
 it.todo('updates the ticket provided valid inputs');
