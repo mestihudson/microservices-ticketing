@@ -34,7 +34,7 @@ it('returns a 401 if the user does not own the ticket', async () => {
 		.expect(401);
 });
 
-it('returns a 400 if the user provides an invalid title or price', async () => {
+it('returns a 400 if the user provides an invalid input', async () => {
 	const cookie = signin('test@test.com', 'new-user-id');
 
 	const response = await request(app)
