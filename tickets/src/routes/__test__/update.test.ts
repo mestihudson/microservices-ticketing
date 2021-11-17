@@ -1,8 +1,17 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 
 import { app } from '@/app';
 
-it.todo('retuns a 404 if the provided id does not exists');
+it('retuns a 404 if the provided id does not exists', async () => {
+	const id = new mongoose.Types.ObjectId().toHexString();
+	await request(app)
+	  .put(`/api/tickets/${id}`)
+		.set('Cookie', signin())
+		.send({ title: 'dklfjaçslkd', price: 20 })
+		.expect(404);
+});
+
 it.todo('returns a 401 if the user is not authenticated');
 it.todo('returns a 401 if the user does not own the ticket');
 it.todo('returns a 400 if the user provides an invalid title or price');
