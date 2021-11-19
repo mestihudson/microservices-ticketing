@@ -11,6 +11,10 @@ declare global {
   function signin(email?: string, id?: string): string[];
 }
 
+if (!process.env.LOGGING_ENABLE) {
+  console.log = function() {}
+}
+
 jest.mock('@/nats-wrapper');
 
 let mongo: any;
