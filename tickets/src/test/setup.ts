@@ -11,6 +11,8 @@ declare global {
   function signin(email?: string, id?: string): string[];
 }
 
+jest.mock('@/nats-wrapper');
+
 let mongo: any;
 
 beforeAll(async () => {
