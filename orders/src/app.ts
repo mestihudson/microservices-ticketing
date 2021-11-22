@@ -6,6 +6,7 @@ import cookieSession from 'cookie-session';
 import {
   errorHandler, NotFoundError, currentUser
 } from '@mestihudson-ticketing/common';
+import { newOrderRouter } from '@/routes/new';
 
 const app = express();
 app.set('trust proxy', true);
@@ -17,6 +18,8 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use(newOrderRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
