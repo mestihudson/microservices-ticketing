@@ -77,7 +77,6 @@ it('should return an error if the ticket is already reserved', async () => {
     .expect(400);
 });
 
-it.todo('should return an error if the ticket is expired');
 it('should reserve the ticket', async () => {
   const ticket = Ticket.build({
     title: 'concert',
