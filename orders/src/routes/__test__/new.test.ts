@@ -78,5 +78,18 @@ it('should return an error if the ticket is already reserved', async () => {
 });
 
 it.todo('should return an error if the ticket is expired');
-it.todo('should reserve the ticket');
+it('should reserve the ticket', async () => {
+  const ticket = Ticket.build({
+    title: 'concert',
+    price: 20
+  });
+  await ticket.save();
+
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+});
+
 it.todo('should emit an event about created order');
