@@ -77,5 +77,6 @@ it('should return an error if the ticket is already reserved', async () => {
     .expect(400);
 });
 
+it.todo('should return an error if the ticket is expired');
 it.todo('should reserve the ticket');
 it.todo('should emit an event about created order');
