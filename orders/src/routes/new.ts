@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import mongoose from 'mongoose';
 
 import { requireAuth, validateRequest } from '@mestihudson-ticketing/common';
 
@@ -12,7 +13,8 @@ router.post(
     body('ticketId')
       .not()
       .isEmpty()
-      .withMessage('TicketId must be provided')
+      .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+      .withMessage('TicketId must be provided and valid')
   ],
   validateRequest,
   async (req: Request, res: Response) => {
