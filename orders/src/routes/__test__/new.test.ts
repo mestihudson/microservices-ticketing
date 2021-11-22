@@ -1,4 +1,5 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 
 import { app } from '@/app';
 
@@ -32,7 +33,6 @@ it('should return an error if an titleId is not provided', async () => {
     .expect(400);
 });
 
-it.todo('should return an error if the ticket does not exist');
 it('should return an error if the ticketId is not a valid id', async () => {
   const ticketId = 'ticketId';
   await request(app)
@@ -40,6 +40,15 @@ it('should return an error if the ticketId is not a valid id', async () => {
     .set('Cookie', signin())
     .send({ ticketId })
     .expect(400);
+});
+
+it('should return an error if the ticket does not exist', async () => {
+  const ticketId = new mongoose.Types.ObjectId().toHexString();
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({ ticketId })
+    .expect(404);
 });
 
 it.todo('should return an error if the ticket is already reserved');
