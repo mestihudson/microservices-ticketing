@@ -9,7 +9,13 @@ it('should have a route handler listening to /api/orders for post requests', asy
   expect(response.status).not.toBe(404);
 });
 
-it.todo('should can only be accessed if the user is signed in');
+it('should can only be accessed if the user is signed in', async () => {
+  await request(app)
+    .post('/api/orders')
+    .send({})
+    .expect(401);
+});
+
 it.todo('should return a status other than 401 if the user is signed in');
 it.todo('should return an error if an titleId is not provided');
 it.todo('should return an error if the ticket does not exist');
