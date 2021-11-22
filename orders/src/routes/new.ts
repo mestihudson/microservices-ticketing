@@ -3,8 +3,9 @@ import { body } from 'express-validator';
 import mongoose from 'mongoose';
 
 import {
-  requireAuth, validateRequest, NotFoundError
+  requireAuth, validateRequest, NotFoundError, OrderStatus, BadRequestError
 } from '@mestihudson-ticketing/common';
+import { Order } from '@/models/order';
 import { Ticket } from '@/models/ticket';
 
 const router = express.Router();
@@ -25,6 +26,20 @@ router.post(
   const ticket = await Ticket.findById(ticketId);
   if (!ticket) {
     throw new NotFoundError();
+  }
+
+  const existingOrder = await Order.findOne({
+    ticket,
+    status: {
+      $in: [
+        OrderStatus.Created,
+        OrderStatus.AwaitingPayment,
+        OrderStatus.Complete
+      ]
+    }
+  });
+  if (existingOrder) {
+    throw new BadRequestError('Ticket is already reserved');
   }
 
   res.send({});
