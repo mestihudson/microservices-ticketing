@@ -24,7 +24,14 @@ it('should return a status other than 401 if the user is signed in', async () =>
   expect(status).not.toBe(401);
 });
 
-it.todo('should return an error if an titleId is not provided');
+it('should return an error if an titleId is not provided', async () => {
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({})
+    .expect(400);
+});
+
 it.todo('should return an error if the ticket does not exist');
 it.todo('should return an error if the ticket is already reserved');
 it.todo('should reserve the ticket');
