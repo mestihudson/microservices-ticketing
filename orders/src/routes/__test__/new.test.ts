@@ -33,7 +33,15 @@ it('should return an error if an titleId is not provided', async () => {
 });
 
 it.todo('should return an error if the ticket does not exist');
-it.todo('should return an error if the ticketId is not a valid id');
+it('should return an error if the ticketId is not a valid id', async () => {
+  const ticketId = 'ticketId';
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({ ticketId })
+    .expect(400);
+});
+
 it.todo('should return an error if the ticket is already reserved');
 it.todo('should reserve the ticket');
 it.todo('should emit an event about created order');
