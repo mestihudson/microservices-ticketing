@@ -16,7 +16,14 @@ it('should can only be accessed if the user is signed in', async () => {
     .expect(401);
 });
 
-it.todo('should return a status other than 401 if the user is signed in');
+it('should return a status other than 401 if the user is signed in', async () => {
+  const { status } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({});
+  expect(status).not.toBe(401);
+});
+
 it.todo('should return an error if an titleId is not provided');
 it.todo('should return an error if the ticket does not exist');
 it.todo('should return an error if the ticket is already reserved');
