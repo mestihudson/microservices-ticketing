@@ -32,7 +32,15 @@ router.post(
     throw new BadRequestError('Ticket is already reserved');
   }
 
-  res.send({});
+  const order = Order.build({
+    ticket,
+    userId: req.currentUser!.id,
+    status: OrderStatus.Created,
+    expiresAt: new Date()
+  });
+  await order.save();
+
+  res.status(201).send(order);
 });
 
 export { router as newOrderRouter };
