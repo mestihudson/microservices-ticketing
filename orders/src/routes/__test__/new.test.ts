@@ -1,4 +1,14 @@
-it.todo('should have a route handler listening to /api/orders for post requests');
+import request from 'supertest';
+
+import { app } from '@/app';
+
+it('should have a route handler listening to /api/orders for post requests', async () => {
+  const response = await request(app)
+    .post('/api/orders')
+    .send({});
+  expect(response.status).not.toBe(404);
+});
+
 it.todo('should can only be accessed if the user is signed in');
 it.todo('should return a status other than 401 if the user is signed in');
 it.todo('should return an error if an titleId is not provided');
