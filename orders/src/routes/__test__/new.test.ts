@@ -33,6 +33,7 @@ it('should return an error if an titleId is not provided', async () => {
 });
 
 it.todo('should return an error if the ticket does not exist');
+it.todo('should return an error if the ticketId is not a valid id');
 it.todo('should return an error if the ticket is already reserved');
 it.todo('should reserve the ticket');
 it.todo('should emit an event about created order');
