@@ -93,7 +93,7 @@ it('should reserve the ticket', async () => {
     .expect(201);
 });
 
-it('should emit an event about created order', async () => {
+it('should emit an order created event', async () => {
   const ticket = Ticket.build({
     title: 'concert',
     price: 20
