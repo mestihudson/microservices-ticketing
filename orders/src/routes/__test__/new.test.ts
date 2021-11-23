@@ -7,6 +7,8 @@ import { app } from '@/app';
 import { Order } from '@/models/order';
 import { Ticket } from '@/models/ticket';
 
+import { natsWrapper } from '@/nats-wrapper';
+
 
 it('should have a route handler listening to /api/orders for post requests', async () => {
   const response = await request(app)
@@ -91,4 +93,24 @@ it('should reserve the ticket', async () => {
     .expect(201);
 });
 
-it.todo('should emit an event about created order');
+it('should emit an event about created order', async () => {
+  const ticket = Ticket.build({
+    title: 'concert',
+    price: 20
+  });
+  await ticket.save();
+
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
+  expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
+    1,
+    'order:created',
+    expect.any(String),
+    expect.any(Function)
+  );
+});
