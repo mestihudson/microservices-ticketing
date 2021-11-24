@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 
-import { requireAuth, NotFoundError } from '@mestihudson-ticketing/common';
+import {
+  requireAuth, NotFoundError, OrderStatus
+} from '@mestihudson-ticketing/common';
 import { Order } from '@/models/order';
 
 const router = express.Router();
@@ -14,7 +16,9 @@ router.delete(
   if (!order) {
     throw new NotFoundError();
   }
-  res.send({});
+  order.status = OrderStatus.Cancelled;
+  await order.save();
+  res.send(order);
 });
 
 export { router as deleteOrderRouter };
