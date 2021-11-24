@@ -8,6 +8,7 @@ import {
 } from '@mestihudson-ticketing/common';
 import { newOrderRouter } from '@/routes/new';
 import { indexOrderRouter } from '@/routes/index';
+import { showOrderRouter } from '@/routes/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -22,6 +23,7 @@ app.use(currentUser);
 
 app.use(newOrderRouter);
 app.use(indexOrderRouter);
+app.use(showOrderRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
