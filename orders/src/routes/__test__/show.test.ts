@@ -31,4 +31,6 @@ describe('can only be accessed if the user is signed in', () => {
 })
 
 it.todo('should fetch the orders');
+it.todo('should return 404 if the order does not exists');
+it.todo('should return 401 if the order does not belong to user');
 it.todo('should fetched order have be populated with the ticket');
