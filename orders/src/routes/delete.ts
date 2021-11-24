@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 
 import {
-  requireAuth, NotFoundError, OrderStatus
+  requireAuth, NotFoundError, OrderStatus, NotAuthorizedError
 } from '@mestihudson-ticketing/common';
 import { Order } from '@/models/order';
 
@@ -15,6 +15,9 @@ router.delete(
   const order = await Order.findById(orderId);
   if (!order) {
     throw new NotFoundError();
+  }
+  if (order.userId !== req.currentUser!.id) {
+    throw new NotAuthorizedError();
   }
   order.status = OrderStatus.Cancelled;
   await order.save();
