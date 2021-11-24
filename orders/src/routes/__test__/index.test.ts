@@ -16,5 +16,11 @@ it('should can only be accessed if the user is signed in', async () => {
     .expect(401);
 });
 
-it.todo('should return a status other than 401 if the user is signed in');
+it('should return a status other than 401 if the user is signed in', async () => {
+  const { status } = await request(app)
+    .get('/api/orders')
+    .set('Cookie', signin())
+    .send({});
+  expect(status).not.toBe(401);
+});
 it.todo('should fetch orders for an particular user');
