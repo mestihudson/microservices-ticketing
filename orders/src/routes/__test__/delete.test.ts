@@ -57,5 +57,22 @@ it('should update order status to cancelled', async () => {
 	expect(updated.status).toBe(OrderStatus.Cancelled);
 });
 
-it.todo('should return 401 if the order does not belong to user');
+it('should return 401 if the order does not belong to user', async () => {
+	const ticket = await Ticket.build({ title: 'concert', price: 20 });
+	ticket.save();
+
+	const { body: order } = await request(app)
+	  .post('/api/orders')
+		.set('Cookie', signin('1@1.com', '1'))
+		.send({ ticketId: ticket.id })
+		.expect(201);
+
+	await request(app)
+	  .delete(`/api/orders/${order.id}`)
+		.set('Cookie', signin())
+		.set('Cookie', signin('2@2.com', '2'))
+		.send({})
+		.expect(401);
+});
+
 it.todo('should emit a cancelled order event');
