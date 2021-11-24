@@ -9,11 +9,12 @@ router.get(
   '/api/orders/:orderId',
   requireAuth,
   async (req: Request, res: Response) => {
-  res.send({});
   const order = await Order.findById(req.params.orderId);
   if (!order) {
     throw new NotFoundError();
   }
+
+  res.send(order);
 });
 
 export { router as showOrderRouter };
