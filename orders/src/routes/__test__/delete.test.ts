@@ -5,6 +5,8 @@ import { app } from '@/app';
 import { Ticket } from '@/models/ticket';
 import { OrderStatus } from '@mestihudson-ticketing/common';
 
+import { natsWrapper } from '@/nats-wrapper';
+
 it('should have a route handler listening to /api/orders/:orderId for delete requests', async () => {
   const orderId = new mongoose.Types.ObjectId().toHexString();
   const { status } = await request(app)
@@ -75,4 +77,27 @@ it('should return 401 if the order does not belong to user', async () => {
 		.expect(401);
 });
 
-it.todo('should emit a cancelled order event');
+it('should emit a cancelled order event', async () => {
+	const ticket = await Ticket.build({ title: 'concert', price: 20 });
+	ticket.save();
+
+	const { body: order } = await request(app)
+	  .post('/api/orders')
+		.set('Cookie', signin())
+		.send({ ticketId: ticket.id })
+		.expect(201);
+
+	const { body: updated } = await request(app)
+	  .delete(`/api/orders/${order.id}`)
+		.set('Cookie', signin())
+		.send({})
+		.expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2);
+  expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
+    2,
+    'order:cancelled',
+    expect.any(String),
+    expect.any(Function)
+	);
+});
