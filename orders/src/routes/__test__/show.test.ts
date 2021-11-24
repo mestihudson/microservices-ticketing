@@ -12,8 +12,23 @@ it('should have a route handler listening to /api/orders/:orderId for get reques
 });
 
 describe('can only be accessed if the user is signed in', () => {
-  it.todo('should return 401 if it is not');
-  it.todo('should return other then 401 if it is');
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+
+  it('should return 401 if it is not', async () => {
+		await request(app)
+			.get(`/api/orders/${orderId}`)
+			.send({})
+			.expect(401);
+	});
+
+  it('should return other than 401 if it is', async () => {
+		const { status } = await request(app)
+			.get(`/api/orders/${orderId}`)
+      .set('Cookie', signin())
+			.send({});
+		expect(status).not.toBe(401);
+  });
 })
+
 it.todo('should fetch the orders');
 it.todo('should fetched order have be populated with the ticket');
