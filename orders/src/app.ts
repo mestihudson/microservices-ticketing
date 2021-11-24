@@ -7,6 +7,7 @@ import {
   errorHandler, NotFoundError, currentUser
 } from '@mestihudson-ticketing/common';
 import { newOrderRouter } from '@/routes/new';
+import { indexOrderRouter } from '@/routes/index';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,6 +21,7 @@ app.use(
 app.use(currentUser);
 
 app.use(newOrderRouter);
+app.use(indexOrderRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
