@@ -64,4 +64,28 @@ it('should fetch the order', async () => {
 	expect(response.body).toMatchObject(expect.objectContaining({ id: order.id }));
 });
 
-it.todo('should fetched order have be populated with the ticket');
+it('should fetched order have be populated with the ticket', async () => {
+  const ticket = Ticket.build({
+		title: 'concert',
+		price: 20
+	});
+	await ticket.save();
+
+	const user = signin();
+	const { body: order } = await request(app)
+	  .post('/api/orders')
+		.set('Cookie', user)
+		.send({ ticketId: ticket.id})
+		.expect(201);
+
+	const response = await request(app)
+		.get(`/api/orders/${order.id}`)
+		.set('Cookie', user)
+		.send({})
+		.expect(200);
+	expect(response.body).toMatchObject(
+		expect.objectContaining({
+			ticket: expect.objectContaining({ id: ticket.id })
+		})
+	);
+});
