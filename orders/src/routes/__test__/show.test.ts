@@ -2,6 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 
 import { app } from '@/app';
+import { Ticket } from '@/models/ticket';
 
 it('should have a route handler listening to /api/orders/:orderId for get requests', async () => {
   const orderId = new mongoose.Types.ObjectId().toHexString();
@@ -30,7 +31,6 @@ describe('can only be accessed if the user is signed in', () => {
   });
 });
 
-it.todo('should fetch the orders');
 it('should return 404 if the order does not exist', async () => {
   const orderId = new mongoose.Types.ObjectId().toHexString();
 	await request(app)
@@ -41,5 +41,27 @@ it('should return 404 if the order does not exist', async () => {
 });
 
 it.todo('should return 401 if the order does not belong to user');
+
+it('should fetch the order', async () => {
+  const ticket = Ticket.build({
+		title: 'concert',
+		price: 20
+	});
+	await ticket.save();
+
+	const user = signin();
+	const { body: order } = await request(app)
+	  .post('/api/orders')
+		.set('Cookie', user)
+		.send({ ticketId: ticket.id})
+		.expect(201);
+
+	const response = await request(app)
+		.get(`/api/orders/${order.id}`)
+		.set('Cookie', user)
+		.send({})
+		.expect(200);
+	expect(response.body).toMatchObject(expect.objectContaining({ id: order.id }));
+});
 
 it.todo('should fetched order have be populated with the ticket');
