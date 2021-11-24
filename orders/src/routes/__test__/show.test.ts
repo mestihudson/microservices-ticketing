@@ -28,9 +28,18 @@ describe('can only be accessed if the user is signed in', () => {
 			.send({});
 		expect(status).not.toBe(401);
   });
-})
+});
 
 it.todo('should fetch the orders');
-it.todo('should return 404 if the order does not exists');
+it('should return 404 if the order does not exist', async () => {
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+	await request(app)
+		.get(`/api/orders/${orderId}`)
+		.set('Cookie', signin())
+		.send({})
+		.expect(404);
+});
+
 it.todo('should return 401 if the order does not belong to user');
+
 it.todo('should fetched order have be populated with the ticket');
