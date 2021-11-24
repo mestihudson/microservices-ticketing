@@ -65,3 +65,4 @@ it('should fetch orders for an particular user', async () => {
 		.expect(200);
 	expect(responseTwo.body.length).toBe(2);
 });
+it.todo('should fetched orders have be populated with the ticket');
