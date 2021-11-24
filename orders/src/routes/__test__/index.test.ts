@@ -65,4 +65,22 @@ it('should fetch orders for an particular user', async () => {
 		.expect(200);
 	expect(responseTwo.body.length).toBe(2);
 });
-it.todo('should fetched orders have be populated with the ticket');
+
+it('should fetched orders have be populated with the ticket', async () => {
+	const ticket = await buildTicket();
+	const user = signin();
+	await buildOrder(user, ticket);
+
+	const { body } = await request(app)
+	  .get('/api/orders')
+		.set('Cookie', user)
+		.send({})
+		.expect(200);
+	expect(body).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({
+				ticket: expect.objectContaining({ id: ticket.id })
+			})
+		])
+	);
+});
