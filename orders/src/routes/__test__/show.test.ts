@@ -40,7 +40,25 @@ it('should return 404 if the order does not exist', async () => {
 		.expect(404);
 });
 
-it.todo('should return 401 if the order does not belong to user');
+it('should return 401 if the order does not belong to user', async () => {
+  const ticket = Ticket.build({
+		title: 'concert',
+		price: 20
+	});
+	await ticket.save();
+
+	const { body: order } = await request(app)
+	  .post('/api/orders')
+		.set('Cookie', signin('1@1.com', '1'))
+		.send({ ticketId: ticket.id })
+		.expect(201);
+
+	await request(app)
+		.get(`/api/orders/${order.id}`)
+		.set('Cookie', signin('2@2.com', '2'))
+		.send({})
+		.expect(401);
+});
 
 it('should fetch the order', async () => {
   const ticket = Ticket.build({
