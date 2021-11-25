@@ -20,6 +20,7 @@
   },
   "scripts": {
     "prebuild": "del ./build/*",
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
     "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
   },
