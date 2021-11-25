@@ -42,7 +42,11 @@ it('should return 404 if the order does not exist', async () => {
 });
 
 it('should update order status to cancelled', async () => {
-	const ticket = await Ticket.build({ title: 'concert', price: 20 });
+	const ticket = await Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
+		title: 'concert',
+		price: 20
+	});
 	ticket.save();
 
 	const { body: order } = await request(app)
@@ -60,7 +64,11 @@ it('should update order status to cancelled', async () => {
 });
 
 it('should return 401 if the order does not belong to user', async () => {
-	const ticket = await Ticket.build({ title: 'concert', price: 20 });
+	const ticket = await Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
+		title: 'concert',
+		price: 20
+	});
 	ticket.save();
 
 	const { body: order } = await request(app)
@@ -78,7 +86,11 @@ it('should return 401 if the order does not belong to user', async () => {
 });
 
 it('should emit a cancelled order event', async () => {
-	const ticket = await Ticket.build({ title: 'concert', price: 20 });
+	const ticket = await Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
+		title: 'concert',
+		price: 20
+	});
 	ticket.save();
 
 	const { body: order } = await request(app)
