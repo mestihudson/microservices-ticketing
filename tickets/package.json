@@ -19,6 +19,7 @@
     "typescript": "^4.4.4"
   },
   "scripts": {
+    "prebuild": "del ./build/*",
     "start": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
     "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
   },
