@@ -2,6 +2,7 @@ const { compilerOptions } = require('./tsconfig');
 const { resolve } = require('path');
 
 module.exports = {
+  "modulePathIgnorePatterns": ["<rootDir>/build"],
   "preset": "ts-jest",
   "testEnvironment": "node",
   "setupFilesAfterEnv": [
