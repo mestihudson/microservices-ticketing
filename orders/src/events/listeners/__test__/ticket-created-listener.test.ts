@@ -20,6 +20,7 @@ const setup = async () => {
 
   // @ts-ignore
   const message: Message = {
+    ack: jest.fn()
   };
 
   return { listener, data, message };
@@ -37,4 +38,10 @@ it('should create and save a ticket', async () => {
   }));
 });
 
-it.todo('should ack the message');
+it('should ack the message', async () => {
+  const { listener, data, message } = await setup();
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
