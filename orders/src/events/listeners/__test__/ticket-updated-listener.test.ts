@@ -28,6 +28,7 @@ const setup = async () => {
 
   // @ts-ignore
   const message: Message = {
+    ack: jest.fn()
   };
 
   return { listener, data, message, ticket };
@@ -46,5 +47,12 @@ it('should find, update and save the ticket', async () => {
   }));
 });
 
-it.todo('should ack the message');
+it('should ack the message', async () => {
+  const { listener, data, message } = await setup();
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
+
 it.todo('should not call ack if the event has skipped version number');
