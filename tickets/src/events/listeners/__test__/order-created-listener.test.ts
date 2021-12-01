@@ -28,6 +28,23 @@ const setup = async (orderId: string = 'order-id', ticket?: any) => {
   return { listener, data, message };
 };
 
+const callListener = async () => {
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+
+  const ticket = Ticket.build({
+    title: 'concert',
+    price: 20,
+    userId: 'user-id'
+  });
+  await ticket.save();
+
+  const { listener, data, message } = await setup(orderId, ticket);
+
+  await listener.onMessage(data, message);
+
+  return  { message, ticket, orderId };
+};
+
 it('should throw an error if ticket has not found', async () => {
   const { listener, data, message } = await setup();
 
@@ -41,36 +58,14 @@ it('should throw an error if ticket has not found', async () => {
 });
 
 it('should update ticket with orderId that own request', async () => {
-  const orderId = new mongoose.Types.ObjectId().toHexString();
-
-  const ticket = Ticket.build({
-    title: 'concert',
-    price: 20,
-    userId: 'user-id'
-  });
-  await ticket.save();
-
-  const { listener, data, message } = await setup(orderId, ticket);
-
-  await listener.onMessage(data, message);
+  const { message, ticket, orderId } = await callListener();
 
   const updated = await Ticket.findById(ticket.id);
   expect(updated!.orderId).toBe(orderId);
 });
 
 it('should acknowledge message', async () => {
-  const orderId = new mongoose.Types.ObjectId().toHexString();
-
-  const ticket = Ticket.build({
-    title: 'concert',
-    price: 20,
-    userId: 'user-id'
-  });
-  await ticket.save();
-
-  const { listener, data, message } = await setup(orderId, ticket);
-
-  await listener.onMessage(data, message);
+  const { message } = await callListener();
 
   expect(message.ack).toHaveBeenCalled();
 });
