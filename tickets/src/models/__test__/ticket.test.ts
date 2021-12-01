@@ -11,11 +11,15 @@ it("should throw an error because of optimistic concurrency control", async () =
   const first = await Ticket.findById(ticket.id);
   const second = await Ticket.findById(ticket.id);
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   first!.set({ price: 10 });
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   second!.set({ price: 15 });
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   await first!.save();
   try {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await second!.save();
   } catch (err) {
     return;

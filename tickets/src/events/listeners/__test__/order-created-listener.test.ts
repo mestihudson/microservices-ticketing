@@ -6,6 +6,7 @@ import { natsWrapper } from "@/nats-wrapper";
 import { OrderCreatedEvent, OrderStatus } from "@mestihudson-ticketing/common";
 import { Ticket } from "@/models/ticket";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setup = async (orderId = "order-id", ticket?: any) => {
   const listener = new OrderCreatedListener(natsWrapper.client);
 
@@ -59,6 +60,7 @@ it("should update ticket with orderId that own request", async () => {
   const { ticket, orderId } = await callListener();
 
   const updated = await Ticket.findById(ticket.id);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   expect(updated!.orderId).toBe(orderId);
 });
 

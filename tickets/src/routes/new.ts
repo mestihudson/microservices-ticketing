@@ -21,6 +21,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const ticket = Ticket.build({ title, price, userId: req.currentUser!.id });
     await ticket.save();
     await new TicketCreatedPublisher(natsWrapper.client).publish({

@@ -14,6 +14,7 @@ if (!process.env.LOGGING_ENABLE) {
 
 jest.mock("@/nats-wrapper");
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let mongo: any;
 
 beforeAll(async () => {
@@ -43,6 +44,7 @@ global.signin = (email = "test@test.com", id = "user-id") => {
   // build a jwt payload. { id, email }
   const payload = { id, email };
   // create the jwt!
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const token = jwt.sign(payload, process.env.JWT_KEY!);
   // build session object. { jwt: MY_JWT }
   const session = { jwt: token };

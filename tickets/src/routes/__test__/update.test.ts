@@ -36,6 +36,7 @@ it("returns a 401 if the user does not own the ticket", async () => {
 });
 
 describe("returns a 400 if the user provides an invalid input", () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let cookie: any, response: any;
 
   beforeAll(async () => {

@@ -30,6 +30,7 @@ router.put(
       throw new NotFoundError();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
