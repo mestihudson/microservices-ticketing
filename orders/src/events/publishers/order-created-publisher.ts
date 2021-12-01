@@ -1,7 +1,5 @@
 import {
   Publisher,
-  BaseEvent,
-  OrderStatus,
   OrderCreatedEvent,
   Subjects,
 } from "@mestihudson-ticketing/common";

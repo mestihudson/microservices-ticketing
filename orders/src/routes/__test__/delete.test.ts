@@ -96,7 +96,7 @@ it("should emit a cancelled order event", async () => {
     .send({ ticketId: ticket.id })
     .expect(201);
 
-  const { body: updated } = await request(app)
+  await request(app)
     .delete(`/api/orders/${order.id}`)
     .set("Cookie", signin())
     .send({})
