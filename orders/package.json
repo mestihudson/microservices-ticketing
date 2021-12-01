@@ -23,6 +23,8 @@
     "prebuild": "del ./build/*",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "nodemon --exec 'yarn build' --watch 'src/*' --watch 'package.json' --watch 'tsconfig.json' -e 'ts,json'",
+    "lint": "eslint ./src --ext .ts",
+    "lint:watch": "nodemon --exec 'yarn lint' --watch 'src/*' -e 'ts,json,js'",
     "start": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
     "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
   },
