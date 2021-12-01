@@ -1,4 +1,3 @@
-it.todo('should acknowledge message')
 import { Message } from 'node-nats-streaming';
 import mongoose from 'mongoose';
 
@@ -24,6 +23,7 @@ const setup = async (orderId: string = 'order-id', ticket?: any) => {
   };
   //@ts-ignore
   const message: Message = {
+    ack: jest.fn()
   };
   return { listener, data, message };
 };
@@ -58,3 +58,19 @@ it('should update ticket with orderId that own request', async () => {
   expect(updated!.orderId).toBe(orderId);
 });
 
+it('should acknowledge message', async () => {
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+
+  const ticket = Ticket.build({
+    title: 'concert',
+    price: 20,
+    userId: 'user-id'
+  });
+  await ticket.save();
+
+  const { listener, data, message } = await setup(orderId, ticket);
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
