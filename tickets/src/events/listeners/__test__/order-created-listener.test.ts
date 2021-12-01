@@ -69,3 +69,15 @@ it('should acknowledge message', async () => {
 
   expect(message.ack).toHaveBeenCalled();
 });
+
+it('should notify about ticket update', async () => {
+  await callListener();
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
+  expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
+		1,
+		'ticket:updated',
+    expect.stringMatching(/orderId/),
+		expect.any(Function)
+  );
+});
