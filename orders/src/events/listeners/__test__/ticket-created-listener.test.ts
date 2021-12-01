@@ -16,6 +16,7 @@ const setup = async () => {
     userId: new mongoose.Types.ObjectId().toHexString(),
   };
 
+  // eslint-disable-next-line  @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const message: Message = {
     ack: jest.fn(),

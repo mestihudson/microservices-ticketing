@@ -9,6 +9,7 @@ declare global {
 }
 
 if (!process.env.LOGGING_ENABLE) {
+  // eslint-disable-next-line  @typescript-eslint/no-empty-function
   console.log = function () {};
 }
 
