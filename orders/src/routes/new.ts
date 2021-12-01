@@ -40,6 +40,7 @@ router.post(
 
     const order = Order.build({
       ticket,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
       expiresAt: new Date(),

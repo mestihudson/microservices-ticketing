@@ -31,6 +31,7 @@ const buildTicket = async () => {
   return ticket;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const buildOrder = async (user: any, ticket: any) => {
   await request(app)
     .post("/api/orders")
