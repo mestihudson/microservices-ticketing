@@ -56,7 +56,7 @@ it("should throw an error if ticket has not found", async () => {
 });
 
 it("should update ticket with orderId that own request", async () => {
-  const { message, ticket, orderId } = await callListener();
+  const { ticket, orderId } = await callListener();
 
   const updated = await Ticket.findById(ticket.id);
   expect(updated!.orderId).toBe(orderId);
