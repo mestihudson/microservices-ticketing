@@ -20,6 +20,7 @@ const setup = async (orderId = "order-id", ticket?: any) => {
     expiresAt: "expiresAt",
     ticket: { id, price },
   };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   const message: Message = {
     ack: jest.fn(),
