@@ -76,4 +76,14 @@ it("should acknowledge message", async () => {
   expect(message.ack).toHaveBeenCalled();
 });
 
-it.todo("should notify about ticket update");
+it("should notify about ticket update", async () => {
+  await createValidOrderCancelledEventData();
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
+  expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
+    1,
+    "ticket:updated",
+    expect.not.stringMatching(/orderId/),
+    expect.any(Function)
+  );
+});
