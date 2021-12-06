@@ -1,3 +1,5 @@
+import { Message } from "node-nats-streaming";
+
 import {
   Subjects,
   Listener,
@@ -10,12 +12,13 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   readonly subject = Subjects.OrderCancelled;
   readonly queueGroupName = queueGroupName;
 
-  async onMessage(data: OrderCancelledEvent["data"]) {
+  async onMessage(data: OrderCancelledEvent["data"], message: Message) {
     const ticket = await Ticket.findById(data.ticket.id);
     if (!ticket) {
       throw new Error("Ticket not found");
     }
     ticket.set({ orderId: undefined });
     await ticket.save();
+    message.ack();
   }
 }
