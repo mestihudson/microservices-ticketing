@@ -8,14 +8,19 @@ import { Ticket } from "@/models/ticket";
 const setup = async () => {
   const listener = new OrderCancelledListener(natsWrapper.client);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const data: OrderCancelledEvent["data"] = {};
-  return { listener, data };
+  return { listener };
 };
 
 it("should throw an error if ticket has not found", async () => {
-  const { listener, data } = await setup();
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const data: OrderCancelledEvent["data"] = {
+    id: orderId,
+  };
+
+  const { listener } = await setup();
 
   try {
     await listener.onMessage(data);
