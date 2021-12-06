@@ -5,7 +5,7 @@ import { app } from "@/app";
 import { natsWrapper } from "@/nats-wrapper";
 import { Ticket } from "@/models/ticket";
 
-it("retuns a 404 if the provided id does not exists", async () => {
+it("should retun a 404 if the provided id does not exists", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .put(`/api/tickets/${id}`)
@@ -14,7 +14,7 @@ it("retuns a 404 if the provided id does not exists", async () => {
     .expect(404);
 });
 
-it("returns a 401 if the user is not authenticated", async () => {
+it("should return a 401 if the user is not authenticated", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .put(`/api/tickets/${id}`)
@@ -22,7 +22,7 @@ it("returns a 401 if the user is not authenticated", async () => {
     .expect(401);
 });
 
-it("returns a 401 if the user does not own the ticket", async () => {
+it("should return a 401 if the user does not own the ticket", async () => {
   const response = await request(app)
     .post("/api/tickets")
     .set("Cookie", signin("test@test.com", "new-user-id"))
@@ -36,7 +36,7 @@ it("returns a 401 if the user does not own the ticket", async () => {
     .expect(401);
 });
 
-describe("returns a 400 if the user provides an invalid input", () => {
+describe("should return a 400 if the user provides an invalid input", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let cookie: any, response: any;
 
@@ -65,7 +65,7 @@ describe("returns a 400 if the user provides an invalid input", () => {
   });
 });
 
-it("updates the ticket provided valid inputs", async () => {
+it("should update the ticket provided valid inputs", async () => {
   const cookie = signin("test@test.com", "new-user-id");
 
   const creation = { title: "dklfjaçslkd", price: 20 };
@@ -115,7 +115,7 @@ it("should reject edit if ticket has reserved", async () => {
     .expect(400);
 });
 
-it("publish an event", async () => {
+it("should publish an event", async () => {
   const cookie = signin("test@test.com", "new-user-id");
 
   const creation = { title: "dklfjaçslkd", price: 20 };
