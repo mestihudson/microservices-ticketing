@@ -8,6 +8,7 @@ import {
   requireAuth,
   NotAuthorizedError,
   validateRequest,
+  BadRequestError,
 } from "@mestihudson-ticketing/common";
 import { TicketUpdatedPublisher } from "@/events/publishers/ticket-updated-publisher";
 
@@ -28,6 +29,10 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError("Cannot edit a reserved ticket");
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
