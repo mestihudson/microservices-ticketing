@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import { app } from "@/app";
 import { natsWrapper } from "@/nats-wrapper";
+import { Ticket } from "@/models/ticket";
 
 it("retuns a 404 if the provided id does not exists", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -87,6 +88,31 @@ it("updates the ticket provided valid inputs", async () => {
     .send();
 
   expect(ticketResponse.body).toMatchObject({ ...update });
+});
+
+it("should reject edit if ticket has reserved", async () => {
+  const cookie = signin("test@test.com", "new-user-id");
+
+  const creation = { title: "dklfjaçslkd", price: 20 };
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send(creation)
+    .expect(201);
+
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+  const ticket = await Ticket.findById(response.body.id);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  ticket!.set({ orderId });
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  await ticket!.save();
+
+  const update = { title: "kdfjçasldkjfçalsk", price: 200 };
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send(update)
+    .expect(400);
 });
 
 it("publish an event", async () => {
