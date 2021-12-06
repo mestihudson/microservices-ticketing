@@ -62,5 +62,10 @@ it("should update orderId field of ticket with undefined value", async () => {
   expect(updatedTicket!.orderId).not.toBeDefined();
 });
 
-it.todo("should acknowledge message");
+it("should acknowledge message", async () => {
+  const { message } = await createValidOrderCancelledEventData();
+
+  expect(message.ack).toHaveBeenCalled();
+});
+
 it.todo("should notify about ticket update");
