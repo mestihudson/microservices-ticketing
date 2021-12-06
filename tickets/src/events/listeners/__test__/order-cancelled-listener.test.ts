@@ -31,7 +31,7 @@ it("should throw an error if ticket has not found", async () => {
   throw new Error("An exception should have been raised");
 });
 
-it("should update orderId field of ticket with undefined value", async () => {
+const createValidOrderCancelledEventData = async () => {
   const orderId = new mongoose.Types.ObjectId().toHexString();
 
   const ticket = Ticket.build({
@@ -51,6 +51,11 @@ it("should update orderId field of ticket with undefined value", async () => {
   const { listener } = await setup();
 
   await listener.onMessage(data);
+
+};
+
+it("should update orderId field of ticket with undefined value", async () => {
+  const { ticket } = await createValidOrderCancelledEventData();
 
   const updatedTicket = await Ticket.findById(ticket.id);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
