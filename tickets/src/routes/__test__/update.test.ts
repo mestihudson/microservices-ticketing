@@ -71,8 +71,8 @@ it("updates the ticket provided valid inputs", async () => {
   const response = await request(app)
     .post("/api/tickets")
     .set("Cookie", cookie)
-    .send(creation);
-  expect(201);
+    .send(creation)
+    .expect(201);
 
   const update = { title: "kdfjçasldkjfçalsk", price: 200 };
   await request(app)
