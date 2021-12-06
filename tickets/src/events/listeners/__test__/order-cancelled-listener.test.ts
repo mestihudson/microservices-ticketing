@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Message } from "node-nats-streaming";
 
 import { OrderCancelledEvent } from "@mestihudson-ticketing/common";
 import { OrderCancelledListener } from "@/events/listeners/order-cancelled-listener";
@@ -8,7 +9,13 @@ import { Ticket } from "@/models/ticket";
 const setup = async () => {
   const listener = new OrderCancelledListener(natsWrapper.client);
 
-  return { listener };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const message: Message = {
+    ack: jest.fn(),
+  };
+
+  return { listener, message };
 };
 
 it("should throw an error if ticket has not found", async () => {
@@ -20,10 +27,10 @@ it("should throw an error if ticket has not found", async () => {
     id: orderId,
   };
 
-  const { listener } = await setup();
+  const { listener, message } = await setup();
 
   try {
-    await listener.onMessage(data);
+    await listener.onMessage(data, message);
   } catch (error) {
     return;
   }
@@ -48,10 +55,11 @@ const createValidOrderCancelledEventData = async () => {
     ticket: { id: ticket.id },
   };
 
-  const { listener } = await setup();
+  const { listener, message } = await setup();
 
-  await listener.onMessage(data);
+  await listener.onMessage(data, message);
 
+  return { ticket, message };
 };
 
 it("should update orderId field of ticket with undefined value", async () => {
