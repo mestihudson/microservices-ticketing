@@ -16,6 +16,8 @@ import { OrderCreatedPublisher } from "@/events/publishers/order-created-publish
 
 const router = express.Router();
 
+const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+
 router.post(
   "/api/orders",
   requireAuth,
@@ -38,12 +40,15 @@ router.post(
       throw new BadRequestError("Ticket is already reserved");
     }
 
+    const expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
+
     const order = Order.build({
       ticket,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
-      expiresAt: new Date(),
+      expiresAt: expiration,
     });
     await order.save();
 
