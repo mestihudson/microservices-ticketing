@@ -29,66 +29,14 @@ it("should raise an error if order has not found", async () => {
 });
 
 it("should update order status to cancelled", async () => {
-  const ticket = Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
-    title: "concert",
-    price: 20,
-  });
-  await ticket.save();
-
-  const order = Order.build({
-    status: OrderStatus.Created,
-    userId: "user-id",
-    expiresAt: new Date(),
-    ticket,
-  });
-  await order.save();
-
-  const listener = new ExpirationCompleteListener(natsWrapper.client);
-
-  const data: ExpirationCompleteEvent["data"] = {
-    orderId: order.id,
-  };
-
-  // @ts-ignore
-  const message: Message = {
-    ack: jest.fn(),
-  };
-
-  await listener.onMessage(data, message);
+  const { order } = await callListener();
 
   const expiredOrder = await Order.findById(order.id);
   expect(expiredOrder!.status).toBe(OrderStatus.Cancelled);
 });
 
 it("should emit an order cancelled event", async () => {
-  const ticket = Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
-    title: "concert",
-    price: 20,
-  });
-  await ticket.save();
-
-  const order = Order.build({
-    status: OrderStatus.Created,
-    userId: "user-id",
-    expiresAt: new Date(),
-    ticket,
-  });
-  await order.save();
-
-  const listener = new ExpirationCompleteListener(natsWrapper.client);
-
-  const data: ExpirationCompleteEvent["data"] = {
-    orderId: order.id,
-  };
-
-  // @ts-ignore
-  const message: Message = {
-    ack: jest.fn(),
-  };
-
-  await listener.onMessage(data, message);
+  const { order, ticket } = await callListener();
 
   expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
   expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
@@ -105,6 +53,12 @@ it("should emit an order cancelled event", async () => {
 });
 
 it("should acknowledge message", async () => {
+  const { message } = await callListener();
+
+  expect(message.ack).toHaveBeenCalled();
+});
+
+const callListener = async () => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
@@ -133,5 +87,5 @@ it("should acknowledge message", async () => {
 
   await listener.onMessage(data, message);
 
-  expect(message.ack).toHaveBeenCalled();
-});
+  return { message, order, ticket };
+};
