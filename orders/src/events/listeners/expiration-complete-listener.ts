@@ -1,9 +1,10 @@
 import { Message } from "node-nats-streaming";
 
 import {
-  Listener,
-  Subjects,
   ExpirationCompleteEvent,
+  Listener,
+  OrderStatus,
+  Subjects,
 } from "@mestihudson-ticketing/common";
 import { queueGroupName } from "@/events/listeners/queue-group-name";
 import { Order } from "@/models/order";
@@ -17,5 +18,7 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
     if (!order) {
       throw new Error("Order has not found");
     }
+    order.set({ status: OrderStatus.Cancelled });
+    await order.save();
   }
 }
