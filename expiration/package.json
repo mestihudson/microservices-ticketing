@@ -7,6 +7,7 @@
     "@mestihudson-ticketing/common": "^1.0.16",
     "@types/bull": "^3.15.6",
     "bull": "^4.1.1",
+    "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.4"
