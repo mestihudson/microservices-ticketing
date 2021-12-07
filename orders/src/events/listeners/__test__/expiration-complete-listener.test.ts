@@ -13,9 +13,11 @@ import { Ticket } from "@/models/ticket";
 it("should raise an error if order has not found", async () => {
   const listener = new ExpirationCompleteListener(natsWrapper.client);
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const data: ExpirationCompleteEvent["data"] = {};
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const message: Message = {};
 
@@ -32,6 +34,7 @@ it("should update order status to cancelled", async () => {
   const { order } = await callListener();
 
   const expiredOrder = await Order.findById(order.id);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   expect(expiredOrder!.status).toBe(OrderStatus.Cancelled);
 });
 
@@ -80,6 +83,7 @@ const callListener = async () => {
     orderId: order.id,
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const message: Message = {
     ack: jest.fn(),
