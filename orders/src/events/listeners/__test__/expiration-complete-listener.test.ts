@@ -7,6 +7,7 @@ import { natsWrapper } from "@/nats-wrapper";
 it("should raise an error if order has not found", async () => {
   const listener = new ExpirationCompleteListener(natsWrapper.client);
 
+  // @ts-ignore
   const data: ExpirationCompleteEvent["data"] = {};
 
   // @ts-ignore
