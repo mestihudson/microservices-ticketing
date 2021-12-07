@@ -100,4 +100,34 @@ it("should emit an order cancelled event", async () => {
   expect(eventData.ticket.id).toBe(ticket.id);
 });
 
-it.todo("should acknowledge message");
+it("should acknowledge message", async () => {
+  const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "concert",
+    price: 20,
+  });
+  await ticket.save();
+
+  const order = Order.build({
+    status: OrderStatus.Created,
+    userId: "user-id",
+    expiresAt: new Date(),
+    ticket,
+  });
+  await order.save();
+
+  const listener = new ExpirationCompleteListener(natsWrapper.client);
+
+  const data: ExpirationCompleteEvent["data"] = {
+    orderId: order.id,
+  };
+
+  // @ts-ignore
+  const message: Message = {
+    ack: jest.fn(),
+  };
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
