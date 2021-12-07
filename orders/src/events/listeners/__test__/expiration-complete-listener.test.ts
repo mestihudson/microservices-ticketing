@@ -51,7 +51,9 @@ it("should update order status to cancelled", async () => {
   };
 
   // @ts-ignore
-  const message: Message = {};
+  const message: Message = {
+    ack: jest.fn(),
+  };
 
   await listener.onMessage(data, message);
 
@@ -82,7 +84,9 @@ it("should emit an order cancelled event", async () => {
   };
 
   // @ts-ignore
-  const message: Message = {};
+  const message: Message = {
+    ack: jest.fn(),
+  };
 
   await listener.onMessage(data, message);
 
