@@ -5,6 +5,7 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
+  NotAuthorizedError,
 } from "@mestihudson-ticketing/common";
 
 import { Order } from "@/models/order";
