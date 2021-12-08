@@ -21,7 +21,7 @@ router.post(
   [body("token").not().isEmpty(), body("orderId").not().isEmpty()],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { orderId } = req.body;
+    const { orderId, token } = req.body;
     const order = await Order.findById(orderId);
     if (!order) {
       throw new NotFoundError();
@@ -32,7 +32,8 @@ router.post(
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError("Cannot pay for a cancelled order");
     }
-    res.send({});
+    await chargesAdapter.create(order.price, token);
+    res.status(201).send({});
   }
 );
 
