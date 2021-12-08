@@ -46,6 +46,8 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
+orderSchema.set("versionKey", "version");
+
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   const { id: _id, version, price, userId, status } = attrs;
   return new Order({ _id, version, price, userId, status });
