@@ -72,5 +72,17 @@ it("should throw an error if order version is not immediately ancestry", async (
   throw new Error("should have been raised an error");
 });
 
-it.todo("should change order status to cancelled");
+it("should change order status to cancelled", async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  await createOrder(id);
+
+  const { listener, data, message } = await setup(id, 1);
+
+  await listener.onMessage(data, message);
+
+  const order = await Order.findById(id);
+  expect(order!.status).toBe(OrderStatus.Cancelled);
+});
+
 it.todo("should acknowlegde message");
