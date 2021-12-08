@@ -35,6 +35,15 @@ it("should throw an error if orderId has not provided", async () => {
     .expect(400);
 });
 
-it.todo("should throw an error if order has not found");
+it("should throw an error if order has not found", async () => {
+  const orderId = new mongoose.Types.ObjectId().toHexString();
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", signin())
+    .send({ token: "token", orderId })
+    .expect(404);
+});
+
 it.todo("should throw an error if order has not belong to current user");
 it.todo("should throw an error if order has cancelled");
