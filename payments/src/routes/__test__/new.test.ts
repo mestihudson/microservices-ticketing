@@ -46,5 +46,14 @@ it("should throw an error if order has not found", async () => {
     .expect(404);
 });
 
-it.todo("should throw an error if order has not belong to current user");
+it("should throw an error if order has not belong to current user", async () => {
+  const { orderId } = await createOrder();
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", signin())
+    .send({ token: "token", orderId })
+    .expect(401);
+});
+
 it.todo("should throw an error if order has cancelled");
