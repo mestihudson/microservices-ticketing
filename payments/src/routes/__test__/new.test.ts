@@ -19,7 +19,14 @@ it("should permit access to signed in users", async () => {
   expect(status).not.toBe(401);
 });
 
-it.todo("should throw an error if token has not provided");
+it("should throw an error if token has not provided", async () => {
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", signin())
+    .send({})
+    .expect(400);
+});
+
 it.todo("should throw an error if orderId has not provided");
 it.todo("should throw an error if order has not found");
 it.todo("should throw an error if order has not belong to current user");
