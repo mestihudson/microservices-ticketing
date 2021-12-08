@@ -1,3 +1,7 @@
+import request from "supertest";
+
+import { app } from "@/app";
+
 it("should handle post requests by listening to /api/payments route", async () => {
   const { status } = await request(app).post("/api/payments").send({});
   expect(status).not.toBe(404);
