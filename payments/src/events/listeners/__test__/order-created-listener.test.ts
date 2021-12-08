@@ -39,4 +39,10 @@ it("should create an order", async () => {
   expect(order).not.toBeNull();
 });
 
-it.todo("should acknowlegde message");
+it("should acknowlegde message", async () => {
+  const { listener, data, message } = await setup();
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
