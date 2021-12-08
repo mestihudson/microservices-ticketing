@@ -65,7 +65,7 @@ const createOrder = async (status?: OrderStatus, userId?: string) => {
   });
   await order.save();
 
-  return { orderId: order.id };
+  return { orderId: order.id, price: order.price };
 };
 
 it("should throw an error if order has not belong to current user", async () => {
