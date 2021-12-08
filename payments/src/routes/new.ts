@@ -23,6 +23,9 @@ router.post(
     if (!order) {
       throw new NotFoundError();
     }
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
     res.send({});
   }
 );
