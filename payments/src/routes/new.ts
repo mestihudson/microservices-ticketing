@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   "/api/payments",
   requireAuth,
-  body("token").not().isEmpty(),
+  [body("token").not().isEmpty(), body("orderId").not().isEmpty()],
   validateRequest,
   (req: Request, res: Response) => {
     res.send({});
