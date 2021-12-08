@@ -37,7 +37,9 @@ const setup = async (id?: string, version?: number) => {
   };
 
   // @ts-ignore
-  const message: Message = {};
+  const message: Message = {
+    ack: jest.fn(),
+  };
 
   return { listener, data, message };
 };
