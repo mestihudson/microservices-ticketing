@@ -49,12 +49,15 @@ it("should throw an error if order has not found", async () => {
     .expect(404);
 });
 
-const createOrder = async () => {
+const createOrder = async (status?: OrderStatus, userId?: string) => {
+  status = status || OrderStatus.Created;
+  userId = userId || "userId";
+
   const order = Order.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     price: 20,
-    status: OrderStatus.Created,
-    userId: "userId",
+    status,
+    userId,
     version: 0,
   });
   await order.save();
