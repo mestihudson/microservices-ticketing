@@ -1,6 +1,9 @@
 import request from "supertest";
 import mongoose from "mongoose";
 
+import { OrderStatus } from "@mestihudson-ticketing/common";
+
+import { Order } from "@/models/order";
 import { app } from "@/app";
 
 it("should handle post requests by listening to /api/payments route", async () => {
