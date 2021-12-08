@@ -85,4 +85,14 @@ it("should change order status to cancelled", async () => {
   expect(order!.status).toBe(OrderStatus.Cancelled);
 });
 
-it.todo("should acknowlegde message");
+it("should acknowlegde message", async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  await createOrder(id);
+
+  const { listener, data, message } = await setup(id, 1);
+
+  await listener.onMessage(data, message);
+
+  expect(message.ack).toHaveBeenCalled();
+});
