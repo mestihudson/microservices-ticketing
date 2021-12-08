@@ -86,3 +86,18 @@ it("should throw an error if order has cancelled", async () => {
     .send({ token: "token", orderId })
     .expect(400);
 });
+
+it("should create a charge", async () => {
+  const userId = "userId";
+  const cookie = signin("t@t.com", userId);
+  const token = "token";
+  const { orderId, price } = await createOrder(OrderStatus.Created, userId);
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", cookie)
+    .send({ token, orderId })
+    .expect(201);
+
+  expect(chargesAdapter.create).toHaveBeenCalledWith(price, token);
+});
