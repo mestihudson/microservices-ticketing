@@ -21,5 +21,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       version: data.version,
     });
     await order.save();
+    message.ack();
   }
 }
