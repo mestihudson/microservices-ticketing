@@ -72,4 +72,14 @@ it("should throw an error if order has not belong to current user", async () => 
     .expect(401);
 });
 
-it.todo("should throw an error if order has cancelled");
+it("should throw an error if order has cancelled", async () => {
+  const userId = "userId";
+  const cookie = signin("t@t.com", userId);
+  const { orderId } = await createOrder(OrderStatus.Cancelled, userId);
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", cookie)
+    .send({ token: "token", orderId })
+    .expect(400);
+});
