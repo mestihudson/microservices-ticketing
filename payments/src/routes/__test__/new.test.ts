@@ -46,6 +46,19 @@ it("should throw an error if order has not found", async () => {
     .expect(404);
 });
 
+const createOrder = async () => {
+  const order = Order.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    price: 20,
+    status: OrderStatus.Created,
+    userId: "userId",
+    version: 0,
+  });
+  await order.save();
+
+  return { orderId: order.id };
+};
+
 it("should throw an error if order has not belong to current user", async () => {
   const { orderId } = await createOrder();
 
