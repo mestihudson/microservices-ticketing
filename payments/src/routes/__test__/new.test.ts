@@ -1,4 +1,8 @@
-it.todo("should handle post requests by listening to /api/payments route");
+it("should handle post requests by listening to /api/payments route", async () => {
+  const { status } = await request(app).post("/api/payments").send({});
+  expect(status).not.toBe(404);
+});
+
 it.todo("should permit access only to signed in users");
 it.todo("should throw an error if token has not provided");
 it.todo("should throw an error if orderId has not provided");
