@@ -27,7 +27,14 @@ it("should throw an error if token has not provided", async () => {
     .expect(400);
 });
 
-it.todo("should throw an error if orderId has not provided");
+it("should throw an error if orderId has not provided", async () => {
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", signin())
+    .send({ token: "token" })
+    .expect(400);
+});
+
 it.todo("should throw an error if order has not found");
 it.todo("should throw an error if order has not belong to current user");
 it.todo("should throw an error if order has cancelled");
