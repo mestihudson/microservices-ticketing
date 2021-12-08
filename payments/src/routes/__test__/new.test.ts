@@ -7,7 +7,7 @@ it("should handle post requests by listening to /api/payments route", async () =
   expect(status).not.toBe(404);
 });
 
-it("should permit access only to signed in users", async () => {
+it("should not permit access to unsigned in users", async () => {
   await request(app).post("/api/payments").send({}).expect(401);
 });
 
