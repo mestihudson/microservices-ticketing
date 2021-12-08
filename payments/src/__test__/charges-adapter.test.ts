@@ -1,3 +1,11 @@
+const getLatestCharge = async (price: number) => {
+  const charges = await stripe.charges.list({ limit: 1 });
+  const charge = charges.data.find(
+    ({ amount, description }) => amount === Math.floor(price * 100)
+  );
+  return { charge };
+};
+
 it("should create a charge on stripe service", async () => {
   const value = Math.random();
   const price = value * 100;
