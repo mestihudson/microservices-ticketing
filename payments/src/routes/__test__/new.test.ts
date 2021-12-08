@@ -7,6 +7,8 @@ import { Order } from "@/models/order";
 import { app } from "@/app";
 import { chargesAdapter } from "@/charges-adapter";
 
+jest.mock("@/charges-adapter");
+
 it("should handle post requests by listening to /api/payments route", async () => {
   const { status } = await request(app).post("/api/payments").send({});
   expect(status).not.toBe(404);
