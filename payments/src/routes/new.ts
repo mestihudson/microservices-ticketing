@@ -16,7 +16,7 @@ router.post(
   requireAuth,
   [body("token").not().isEmpty(), body("orderId").not().isEmpty()],
   validateRequest,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     res.send({});
   }
 );
