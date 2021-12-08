@@ -51,6 +51,21 @@ it("should throw an error if order has not found", async () => {
   throw new Error("should have been raised an error");
 });
 
-it.todo("should throw an error if order version is not immediately ancestry");
+it("should throw an error if order version is not immediately ancestry", async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  await createOrder(id);
+
+  const { listener, data, message } = await setup(id, 2);
+
+  try {
+    await listener.onMessage(data, message);
+  } catch (err) {
+    return;
+  }
+
+  throw new Error("should have been raised an error");
+});
+
 it.todo("should change order status to cancelled");
 it.todo("should acknowlegde message");
