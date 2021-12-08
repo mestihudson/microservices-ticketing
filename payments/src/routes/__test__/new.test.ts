@@ -7,7 +7,10 @@ it("should handle post requests by listening to /api/payments route", async () =
   expect(status).not.toBe(404);
 });
 
-it.todo("should permit access only to signed in users");
+it("should permit access only to signed in users", async () => {
+  await request(app).post("/api/payments").send({}).expect(401);
+});
+
 it.todo("should throw an error if token has not provided");
 it.todo("should throw an error if orderId has not provided");
 it.todo("should throw an error if order has not found");
