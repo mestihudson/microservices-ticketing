@@ -25,7 +25,9 @@ const setup = async () => {
   };
 
   // @ts-ignore
-  const message: Message = {};
+  const message: Message = {
+    ack: jest.fn(),
+  };
 
   return { listener, data, message, orderId };
 };
