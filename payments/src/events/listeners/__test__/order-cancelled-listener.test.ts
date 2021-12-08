@@ -36,6 +36,7 @@ const setup = async (id?: string, version?: number) => {
     },
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const message: Message = {
     ack: jest.fn(),
@@ -84,6 +85,7 @@ it("should change order status to cancelled", async () => {
   await listener.onMessage(data, message);
 
   const order = await Order.findById(id);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   expect(order!.status).toBe(OrderStatus.Cancelled);
 });
 
