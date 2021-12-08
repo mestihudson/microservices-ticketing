@@ -9,9 +9,11 @@ import { Order } from "@/models/order";
 import { OrderCancelledListener } from "@/events/listeners/order-cancelled-listener";
 import { natsWrapper } from "@/nats-wrapper";
 
-const createOrder = async () => {
+const createOrder = async (id?: string) => {
+  id = id || new mongoose.Types.ObjectId().toHexString();
+
   const order = Order.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id,
     price: 20,
     status: OrderStatus.Created,
     userId: "userid",
@@ -20,12 +22,15 @@ const createOrder = async () => {
   await order.save();
 };
 
-const setup = async () => {
+const setup = async (id?: string, version?: number) => {
   const listener = new OrderCancelledListener(natsWrapper.client);
 
+  id = id || new mongoose.Types.ObjectId().toHexString();
+  version = version || 0;
+
   const data: OrderCancelledEvent["data"] = {
-    id: new mongoose.Types.ObjectId().toHexString(),
-    version: 0,
+    id,
+    version,
     ticket: {
       id: "ticketId",
     },
