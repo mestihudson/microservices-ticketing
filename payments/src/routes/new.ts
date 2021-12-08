@@ -1,7 +1,13 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 
-import { requireAuth, validateRequest } from "@mestihudson-ticketing/common";
+import {
+  requireAuth,
+  validateRequest,
+  NotFoundError,
+} from "@mestihudson-ticketing/common";
+
+import { Order } from "@/models/order";
 
 const router = express.Router();
 
