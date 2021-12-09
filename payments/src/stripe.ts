@@ -1,5 +1,5 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe("sk_test_4eC39HqLyjWDarjtT1zdp7dc", {
+export const stripe = new Stripe(process.env.STRIPE_KEY!, {
   apiVersion: "2020-08-27",
 });
