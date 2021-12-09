@@ -1,6 +1,8 @@
 import { stripe } from "@/stripe";
 import { chargesAdapter } from "@/charges-adapter";
 
+jest.setTimeout(60 * 1000);
+
 const getLatestCharge = async (price: number) => {
   const charges = await stripe.charges.list({ limit: 1 });
   const charge = charges.data.find(
