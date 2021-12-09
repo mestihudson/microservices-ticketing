@@ -1,3 +1,5 @@
+process.env.STRIPE_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc";
+
 import { stripe } from "@/stripe";
 import { chargesAdapter } from "@/charges-adapter";
 
