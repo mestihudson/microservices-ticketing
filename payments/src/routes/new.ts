@@ -13,6 +13,8 @@ import {
 import { Order } from "@/models/order";
 import { Payment } from "@/models/payment";
 import { chargesAdapter } from "@/charges-adapter";
+import { PaymentCreatedPublisher } from "@/events/publishers/payment-created-publisher";
+import { natsWrapper } from "@/nats-wrapper";
 
 const router = express.Router();
 
