@@ -104,3 +104,6 @@ it("should create a charge", async () => {
 
   expect(chargesAdapter.create).toHaveBeenCalledWith(price, token);
 });
+
+it.todo("should create a payment");
+it.todo("should emit a payment created event");
