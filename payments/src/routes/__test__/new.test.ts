@@ -125,4 +125,23 @@ it("should create a payment", async () => {
   expect(payment!.stripeId).not.toBeNull();
 });
 
-it.todo("should emit a payment created event");
+it("should emit a payment created event", async () => {
+  const userId = "userId";
+  const cookie = signin("t@t.com", userId);
+  const token = "token";
+  const { orderId, price } = await createOrder(OrderStatus.Created, userId);
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", cookie)
+    .send({ token, orderId })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
+  expect(natsWrapper.client.publish).toHaveBeenNthCalledWith(
+    1,
+    "payment:created",
+    expect.any(String),
+    expect.any(Function)
+  );
+});
