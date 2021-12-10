@@ -39,6 +39,11 @@ router.post(
     const { stripeId } = await chargesAdapter.create(order.price, token);
     const payment = Payment.build({ orderId, stripeId });
     await payment.save();
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId,
+    });
     res.status(201).send({ success: true });
   }
 );
