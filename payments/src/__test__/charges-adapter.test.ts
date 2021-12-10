@@ -8,7 +8,7 @@ jest.setTimeout(60 * 1000);
 const getLatestCharge = async (price: number) => {
   const charges = await stripe.charges.list({ limit: 1 });
   const charge = charges.data.find(
-    ({ amount, description }) => amount === Math.floor(price * 100)
+    ({ amount }) => amount === Math.floor(price * 100)
   );
   return { charge };
 };
