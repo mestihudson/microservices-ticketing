@@ -23,3 +23,13 @@ it("should create a charge on stripe service", async () => {
   const { charge: after } = await getLatestCharge(price);
   expect(after).toBeDefined();
 });
+
+it("should return a object with stripeId to created charge on stripe service", async () => {
+  const value = Math.random();
+  const price = value * 100;
+  const token = "tok_visa";
+
+  const result = await chargesAdapter.create(price, token);
+  expect(result).not.toBeNull();
+  expect(result.stripeId).toBeDefined();
+});
