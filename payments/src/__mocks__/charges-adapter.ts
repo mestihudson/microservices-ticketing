@@ -1,5 +1,5 @@
 export const chargesAdapter = {
   create: jest.fn().mockImplementation(() => {
-    return Promise.resolve();
+    return Promise.resolve({ stripeId: "stripe-id" });
   }),
 };
