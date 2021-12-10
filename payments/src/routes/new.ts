@@ -11,6 +11,7 @@ import {
 } from "@mestihudson-ticketing/common";
 
 import { Order } from "@/models/order";
+import { Payment } from "@/models/payment";
 import { chargesAdapter } from "@/charges-adapter";
 
 const router = express.Router();
