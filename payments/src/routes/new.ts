@@ -33,7 +33,7 @@ router.post(
       throw new BadRequestError("Cannot pay for a cancelled order");
     }
     await chargesAdapter.create(order.price, token);
-    res.status(201).send({});
+    res.status(201).send({ success: true });
   }
 );
 
