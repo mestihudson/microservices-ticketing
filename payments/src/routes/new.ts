@@ -26,6 +26,7 @@ router.post(
     if (!order) {
       throw new NotFoundError();
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (order.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
