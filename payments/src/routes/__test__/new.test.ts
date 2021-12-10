@@ -146,3 +146,19 @@ it("should emit a payment created event", async () => {
     expect.any(Function)
   );
 });
+
+it("should return payment id on body when successful", async () => {
+  const userId = "userId";
+  const cookie = signin("t@t.com", userId);
+  const token = "token";
+  const { orderId, price } = await createOrder(OrderStatus.Created, userId);
+
+  const { body } = await request(app)
+    .post("/api/payments")
+    .set("Cookie", cookie)
+    .send({ token, orderId })
+    .expect(201);
+
+  const payment = await Payment.findOne({ orderId });
+  expect(body.id).toBe(payment!.id);
+});
