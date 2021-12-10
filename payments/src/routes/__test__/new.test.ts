@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { OrderStatus } from "@mestihudson-ticketing/common";
 
 import { Order } from "@/models/order";
+import { Payment } from "@/models/payment";
 import { app } from "@/app";
 import { chargesAdapter } from "@/charges-adapter";
 
