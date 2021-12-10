@@ -7,6 +7,7 @@ import { Order } from "@/models/order";
 import { Payment } from "@/models/payment";
 import { app } from "@/app";
 import { chargesAdapter } from "@/charges-adapter";
+import { natsWrapper } from "@/nats-wrapper";
 
 jest.mock("@/charges-adapter");
 
