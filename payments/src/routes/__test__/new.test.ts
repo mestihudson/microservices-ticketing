@@ -105,5 +105,23 @@ it("should create a charge", async () => {
   expect(chargesAdapter.create).toHaveBeenCalledWith(price, token);
 });
 
-it.todo("should create a payment");
+it("should create a payment", async () => {
+  const payments = await Payment.find({});
+  expect(payments.length).toBe(0);
+
+  const userId = "userId";
+  const cookie = signin("t@t.com", userId);
+  const token = "token";
+  const { orderId, price } = await createOrder(OrderStatus.Created, userId);
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", cookie)
+    .send({ token, orderId })
+    .expect(201);
+
+  const payment = await Payment.findOne({ orderId });
+  expect(payment!.stripeId).not.toBeNull();
+});
+
 it.todo("should emit a payment created event");
