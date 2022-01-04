@@ -1,3 +1,15 @@
+const setup = async () => {
+  const listener = new PaymentCreatedListener(natsWrapper.client);
+
+  //@ts-ignore
+  const data: PaymentCreatedEvent["data"] = {};
+
+  //@ts-ignore
+  const message: Message = {};
+
+  return { listener, data, message };
+};
+
 it("should throw an error if order has not found", async () => {
   const { listener, data, message } = await setup();
 
