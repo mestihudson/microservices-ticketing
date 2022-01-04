@@ -60,4 +60,8 @@ it("should update order status to completed", async () => {
   expect(updated!.status).toBe(OrderStatus.Complete);
 });
 
-it.todo("should acknowledge a message");
+it("should acknowledge a message", async () => {
+  const { message } = await callListener();
+
+  expect(message.ack).toHaveBeenCalled();
+});
