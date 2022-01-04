@@ -14,6 +14,26 @@ const setup = async () => {
   return { listener, data, message };
 };
 
+const callListener = async () => {
+  const id = new mongoose.Types.ObjectId().toHexString();
+  const ticket = Ticket.build({
+    id,
+    title: "concert",
+    price: 20,
+  });
+  await ticket.save();
+  const order = Order.build({
+    userId: "user-id",
+    expiresAt: new Date(),
+    status: OrderStatus.Created,
+    ticket,
+  });
+  await order.save();
+  const { listener, data, message } = await setup(order.id);
+  await listener.onMessage(data, message)
+  return { orderId: order.id };
+};
+
 it("should throw an error if order has not found", async () => {
   const { listener, data, message } = await setup();
 
