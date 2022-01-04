@@ -26,6 +26,13 @@ it("should throw an error if order has not found", async () => {
   throw new Error("An exception should have been raised");
 });
 
-it.todo("should update order status to completed");
+it("should update order status to completed", async () => {
+  const { orderId } = await callListener();
+
+  const updated = await Order.findById(orderId);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  expect(updated!.status).toBe(OrderStatus.Complete);
+});
+
 it.todo("should emit a order completed event");
 it.todo("should acknowledge a message");
