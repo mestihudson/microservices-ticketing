@@ -27,7 +27,8 @@
     "lint": "eslint ./src --ext .ts",
     "lint:watch": "nodemon --exec 'yarn lint' --watch 'src/*' -e 'ts,json,js'",
     "start": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
-    "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles"
+    "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles",
+    "test:ci": "jest"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",
