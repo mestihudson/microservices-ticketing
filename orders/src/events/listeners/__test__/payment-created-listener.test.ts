@@ -2,11 +2,13 @@ import { PaymentCreatedEvent } from "@mestihudson-ticketing/common";
 import { PaymentCreatedListener } from "@/events/listeners/payment-created-listener";
 import { natsWrapper } from "@/nats-wrapper";
 
-const setup = async () => {
+const setup = async (orderId = "order-id") => {
   const listener = new PaymentCreatedListener(natsWrapper.client);
 
   //@ts-ignore
-  const data: PaymentCreatedEvent["data"] = {};
+  const data: PaymentCreatedEvent["data"] = {
+    orderId
+  };
 
   //@ts-ignore
   const message: Message = {};
