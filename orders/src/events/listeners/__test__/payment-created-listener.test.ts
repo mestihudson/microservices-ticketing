@@ -1,3 +1,7 @@
+import { PaymentCreatedEvent } from "@mestihudson-ticketing/common";
+import { PaymentCreatedListener } from "@/events/listeners/payment-created-listener";
+import { natsWrapper } from "@/nats-wrapper";
+
 const setup = async () => {
   const listener = new PaymentCreatedListener(natsWrapper.client);
 
