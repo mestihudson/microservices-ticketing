@@ -60,5 +60,4 @@ it("should update order status to completed", async () => {
   expect(updated!.status).toBe(OrderStatus.Complete);
 });
 
-it.todo("should emit a order completed event");
 it.todo("should acknowledge a message");
