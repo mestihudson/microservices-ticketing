@@ -61,7 +61,6 @@ it("should acknowledge message", async () => {
   expect(message.ack).toHaveBeenCalled();
 });
 
-const callListener = async () => {
 it("should not cancel a completed order", async () => {
   const { order, message } = await callListener(OrderStatus.Complete);
 
@@ -70,6 +69,8 @@ it("should not cancel a completed order", async () => {
   expect(natsWrapper.client.publish).toHaveBeenCalledTimes(0);
   expect(message.ack).toHaveBeenCalled();
 });
+
+const callListener = async (status = OrderStatus.Created) => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
@@ -78,7 +79,7 @@ it("should not cancel a completed order", async () => {
   await ticket.save();
 
   const order = Order.build({
-    status: OrderStatus.Created,
+    status,
     userId: "user-id",
     expiresAt: new Date(),
     ticket,
