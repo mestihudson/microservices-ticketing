@@ -15,7 +15,9 @@ const setup = async (orderId = "order-id") => {
   };
 
   //@ts-ignore
-  const message: Message = {};
+  const message: Message = {
+    ack: jest.fn()
+  };
 
   return { listener, data, message };
 };
@@ -37,7 +39,7 @@ const callListener = async () => {
   await order.save();
   const { listener, data, message } = await setup(order.id);
   await listener.onMessage(data, message)
-  return { orderId: order.id };
+  return { orderId: order.id, message };
 };
 
 it("should throw an error if order has not found", async () => {
