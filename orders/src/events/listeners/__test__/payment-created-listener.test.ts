@@ -1,6 +1,10 @@
-import { PaymentCreatedEvent } from "@mestihudson-ticketing/common";
+import mongoose from "mongoose";
+
+import { PaymentCreatedEvent, OrderStatus } from "@mestihudson-ticketing/common";
 import { PaymentCreatedListener } from "@/events/listeners/payment-created-listener";
 import { natsWrapper } from "@/nats-wrapper";
+import { Order } from "@/models/order";
+import { Ticket } from "@/models/ticket";
 
 const setup = async (orderId = "order-id") => {
   const listener = new PaymentCreatedListener(natsWrapper.client);
